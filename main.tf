@@ -11,22 +11,14 @@ provider "aws" {
   region = "us-east-1" # Change this to your region
 }
 
-data "aws_ami" "ubuntu" {
+data "aws_ami" "debug" {
   most_recent = true
 
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-20.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical (Ubuntu publisher)
+  owners = ["099720109477"]
 }
-
+output "debug_ami_id" {
+  value = data.aws_ami.debug.id
+}
 
 
 
