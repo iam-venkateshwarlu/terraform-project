@@ -27,6 +27,7 @@ pipeline {
                     sh 'installTerraform()'
                 }
             }
+        }
 
           stage('Terraform Init') {
             steps {
