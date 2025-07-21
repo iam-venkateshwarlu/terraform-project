@@ -21,11 +21,18 @@ pipeline {
             }
         }
 
+          stage('Terraform Init') {
+            steps {
+                script {
+                    sh 'terraform init'
+                }
+            }
+        }
+
         stage('Plan') {
             steps {
                 dir('terraform') {
                     sh 'rm -rf .terraform'
-                    sh 'terraform init -upgrade'
                     sh 'terraform plan -out tfplan'
                 }
             }
