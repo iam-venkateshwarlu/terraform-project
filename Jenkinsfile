@@ -29,21 +29,17 @@ pipeline {
             }
         }
 
-        stage('Plan') {
+        stage('Terraform Plan') {
             steps {
-                dir('terraform') {
-                    sh 'rm -rf .terraform'
-                    sh 'terraform plan -out tfplan'
+                script {
+                    sh 'terraform plan -out=tfplan'
                 }
             }
         }
 
-        stage('Apply') {
-            when {
-                expression { return params.autoApprove }
-            }
+       stage('Terraform Apply') {
             steps {
-                dir('terraform') {
+                script {
                     sh 'terraform apply -auto-approve tfplan'
                 }
             }
