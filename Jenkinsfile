@@ -21,6 +21,13 @@ pipeline {
             }
         }
 
+        stage('Terraform install') {
+            steps {
+                script {
+                    sh 'installTerraform()'
+                }
+            }
+
           stage('Terraform Init') {
             steps {
                 script {
