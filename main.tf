@@ -8,9 +8,27 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1" # Change this to your region
+  region = "us-east-1" # Change as per your region
 }
 
+
+
+#count
+/*
+resource "aws_s3_bucket" "example" {
+  count = 2
+  bucket = "my-tf-test-bucket-unique-name-${count.index + 1}" # Ensure the bucket name is globally unique
+
+  tags = {
+    Name        = "My bucket ${count.index + 1}"
+    Environment = "Dev"
+  }
+}
+*/
+
+
+
+/*
 data "aws_ami" "debug" {
   most_recent = true
 
@@ -19,7 +37,6 @@ data "aws_ami" "debug" {
 output "debug_ami_id" {
   value = data.aws_ami.debug.id
 }
-
 
 
 resource "aws_instance" "web" {
@@ -32,7 +49,7 @@ resource "aws_instance" "web" {
   }
 }
 
-/*
+
 resource "aws_security_group" "sg" {
   count = 2
   name = "web_sg"
