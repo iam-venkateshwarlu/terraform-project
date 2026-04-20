@@ -1,78 +1,24 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
+module "vpc" {
+  source             = "./modules/vpc"
+  project_name       = var.project_name
+  vpc_cidr           = var.vpc_cidr
+  public_subnet_cidr = var.public_subnet_cidr
+  aws_region         = var.aws_region
 }
 
-provider "aws" {
-  region = "us-east-1" # Change as per your region
+module "security_group" {
+  source       = "./modules/security-group"
+  project_name = var.project_name
+  vpc_id       = module.vpc.vpc_id
+  my_ip        = var.my_ip
 }
 
-
-
-#count
-/*
-resource "aws_s3_bucket" "example" {
-  count = 2
-  bucket = "my-tf-test-bucket-unique-name-${count.index + 1}" # Ensure the bucket name is globally unique
-
-  tags = {
-    Name        = "My bucket ${count.index + 1}"
-    Environment = "Dev"
-  }
+module "ec2" {
+  source            = "./modules/ec2"
+  project_name      = var.project_name
+  ami_id            = var.ami_id
+  instance_type     = var.instance_type
+  key_name          = var.key_name
+  subnet_id         = module.vpc.public_subnet_id
+  security_group_id = module.security_group.security_group_id
 }
-*/
-
-
-
-/*
-data "aws_ami" "debug" {
-  most_recent = true
-
-  owners = ["099720109477"]
-}
-output "debug_ami_id" {
-  value = data.aws_ami.debug.id
-}
-
-
-resource "aws_instance" "web" {
-  count = 4
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-
-  tags = {
-    Name = "HelloWorld ${count.index + 1}"
-  }
-}
-
-
-resource "aws_security_group" "sg" {
-  count = 2
-  name = "web_sg"
-  description = "Allow HTTP and SSH traffic"
-  vpc_id = "vpc-12345678+{index.value}" # Replace with your VPC ID
-
-  ingress = {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "ssh"
-    cidr_blocks  = ["0.0.0.0/0"]
-  }
-
-  egress = {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "web_sg"
-  }
-  
-}
-*/
