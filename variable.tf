@@ -1,30 +1,44 @@
-variable "aws_region" {}
-variable "project_name" {}
-variable "vpc_cidr" {}
-variable "public_subnet_cidr" {}
-variable "ami_id" {}
-variable "my_ip" {}
-variable "instance_type" {}
-variable "key_name" {}
-
-variable "user_names" {
-  description = "List of user names"
-  type        = list(string)
-  default     = ["user1", "user2", "user3"]
+variable "aws_region" {
+    description = "The AWS region to deploy resources"
+    type        = string
+    default     = "ap-south-1"
 }
 
-#foreach
-resource "aws_iam_user" "name" {
-  count = length(var.user_names)
-  name  = var.user_names[count.index]
+variable "project_name" {
+    description = "The name of the project"
+    type        = string
+    default     = "my-terraform-project"
 }
 
-resource "aws_s3_bucket" "name" {
-  count  = length(var.user_names)
-  bucket = "my-tf-test-bucketsss-${var.user_names[count.index]}" # Ensure the bucket name is globally unique
-  tags = {
-    bucket_name = var.user_names[count.index]
-    Environment = "Dev"
-  }
+variable "vpc_cidr" {
+    description = "The CIDR block for the VPC"
+    type        = string
+    default     = "10.0.0.0/16"
+}
 
-}   
+variable "public_subnet_cidr" {
+    description = "The CIDR block for the public subnet"
+    type        = string
+    default     = "10.0.1.0/24"
+}
+
+variable "ami_id" {
+    description = "Amazon Linux 2 or Ubuntu AMI"
+    type        = strin
+}
+
+variable "my_ip" {
+    description = "The public IP address of the user"
+    type        = string
+}
+
+variable "instance_type" {
+    description = "The EC2 instance type"
+    type        = string
+    default     = "t2.micro"
+}
+
+variable "key_name" {
+    description = "Existing EC2 key pair name"
+    type        = string
+}
