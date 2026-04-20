@@ -24,7 +24,7 @@ variable "public_subnet_cidr" {
 
 variable "ami_id" {
     description = "Amazon Linux 2 or Ubuntu AMI"
-    type        = strin
+    type        = string
 }
 
 variable "my_ip" {
